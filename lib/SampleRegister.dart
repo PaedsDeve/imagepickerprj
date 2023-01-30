@@ -57,6 +57,7 @@ class HomePage extends State<HomePageState> {
   var _image;
 
   XFile file;
+  File newFile;
 
   @override
   void initState() {
@@ -166,6 +167,8 @@ class HomePage extends State<HomePageState> {
 
   Future saveFile() async {
     try {
+      File resultFile = File(file.path);
+
       final String newFileName =
           controller_projectName.text + "_" + controller_sampleID.text + ".jpg";
 
@@ -173,13 +176,11 @@ class HomePage extends State<HomePageState> {
       var lastSeperator = path.lastIndexOf(Platform.pathSeparator);
       var newPath = path.substring(0, lastSeperator + 1) + newFileName;
 
-      File resultFile = File(file.path);
-
       //Get this App Document Directory
       final Directory _appDocDir = await getExternalStorageDirectory();
       //App Document Directory + folder name
       Directory _appDocDirFolder =
-          Directory('${_appDocDir.path}/DCIM/docsmgtsys/');
+      Directory('${_appDocDir.path}/DCIM/docsmgtsys/');
 
       if (await _appDocDirFolder.exists()) {
         //if folder already exists return path
@@ -190,7 +191,7 @@ class HomePage extends State<HomePageState> {
         _appDocDirFolder = await _appDocDirFolder.create(recursive: true);
       }
 
-      File newFile = resultFile.renameSync(newPath);
+      //File newFile = resultFile.renameSync(newPath);
 
       print(file.path + " - " + newFile.path);
 
@@ -198,7 +199,7 @@ class HomePage extends State<HomePageState> {
 
       arr = newFile.path.split('/');
 
-      newFile.copySync(_appDocDirFolder.path + "/DCIM/docsmgtsys/" + arr[6]);
+      newFile.copySync(_appDocDirFolder.path + arr[6]);
 
       //file.saveTo(_appDocDir.path + "/docsmgtsys/docsmgtsys/" + arr[6]);
 
@@ -224,7 +225,7 @@ class HomePage extends State<HomePageState> {
         var lastSeperator = path.lastIndexOf(Platform.pathSeparator);
         var newPath = path.substring(0, lastSeperator + 1) + newFileName;
 
-        File newFile = resultFile.renameSync(newPath);
+        newFile = resultFile.renameSync(newPath);
 
         /*//Get this App Document Directory
         final Directory _appDocDir = await getExternalStorageDirectory();
